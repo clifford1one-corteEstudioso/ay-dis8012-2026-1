@@ -2,7 +2,7 @@
 
 administración financiera 2026-1
 
-[ASISTENCIA](https://docs.google.com/spreadsheets/d/1lEHgTUfId9IkuzDcUnD4kP7cxnYzoGr0FBvFkCTmsjU/edit?usp=sharing)
+[ASISTENCIA](https://docs.google.com/spreadsheets/d/e/2PACX-1vTMeIMP2mn90HjcL1pqEoql2RbaTNtwda-_YVzt-BrHwPDS7WDqow4l6wARsoCj1wIUy077jvGNEDG3/pubhtml)
 
 [DRIVE](https://1drv.ms/f/c/ead0435f51086119/IgC285KcNBIsSKxkzFOcnkELATzrZEw0YLgSuBsQC_L6Jz8?e=LXsk9c)
 

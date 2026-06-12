@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rúbrica Solemne 2 – Administración Financiera</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #16161d;
+    --border: #2a2a38;
+    --accent: #e8c840;
+    --accent2: #4ecdc4;
+    --accent3: #ff6b6b;
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --green: #52e09c;
+    --orange: #ff9f43;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    max-width: 960px;
+    margin: 0 auto 48px;
+    border-left: 4px solid var(--accent);
+    padding-left: 24px;
+    position: relative;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: -4px;
+    width: 4px; height: calc(100% + 20px);
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+    animation: pulse-line 3s ease-in-out infinite;
+  }
+  @keyframes pulse-line {
+    0%, 100% { opacity: 0.5; } 50% { opacity: 1; }
+  }
+  .kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── SCORE PANEL ── */
+  .score-panel {
+    max-width: 960px;
+    margin: 0 auto 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .score-display {
+    text-align: center;
+    min-width: 120px;
+  }
+  .score-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--accent);
+    transition: color 0.5s;
+  }
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .score-bar-wrap {
+    flex: 1;
+    min-width: 200px;
+  }
+  .score-bar-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .score-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width 0.8s cubic-bezier(.4,0,.2,1);
+  }
+  .nota-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .nota-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--green);
+    transition: color 0.5s;
+  }
+  .score-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: auto;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0f0f13;
+    font-weight: 500;
+  }
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    max-width: 960px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: #1e1e2e;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--text);
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── RUBRIC CARD ── */
+  .rubric-grid {
+    max-width: 960px;
+    margin: 0 auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rubric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .rubric-card:hover { border-color: #3a3a55; }
+  .rubric-card.selected { border-color: var(--accent); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(232,200,64,0.08);
+    border: 1px solid rgba(232,200,64,0.2);
+    border-radius: 6px;
+    padding: 4px 9px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .card-info { flex: 1; }
+  .card-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 90px;
+  }
+  .card-pts-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .card-pts-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent2);
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .card-pts-max {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.3s;
+    margin-top: 4px;
+  }
+  .rubric-card.open .chevron { transform: rotate(180deg); }
+
+  /* ── LEVELS ── */
+  .card-levels {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 0 24px 20px;
+  }
+  .rubric-card.open .card-levels { display: block; }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .level-btn {
+    background: #1a1a25;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+  }
+  .level-btn:hover { border-color: #4a4a66; background: #1e1e2e; }
+  .level-btn.active-4 { border-color: var(--green); background: rgba(82,224,156,0.07); }
+  .level-btn.active-3 { border-color: var(--accent); background: rgba(232,200,64,0.07); }
+  .level-btn.active-2 { border-color: var(--orange); background: rgba(255,159,67,0.07); }
+  .level-btn.active-1 { border-color: var(--accent3); background: rgba(255,107,107,0.07); }
+
+  .level-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .active-4 .level-score { color: var(--green); }
+  .active-3 .level-score { color: var(--accent); }
+  .active-2 .level-score { color: var(--orange); }
+  .active-1 .level-score { color: var(--accent3); }
+
+  .level-4 .level-score { color: var(--green); }
+  .level-3 .level-score { color: var(--accent); }
+  .level-2 .level-score { color: var(--orange); }
+  .level-1 .level-score { color: var(--accent3); }
+
+  .level-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .level-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── OBSERVACIONES ── */
+  .obs-wrap { margin-top: 14px; }
+  .obs-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  textarea.obs-input {
+    width: 100%;
+    background: #1a1a25;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    padding: 10px 14px;
+    resize: vertical;
+    min-height: 60px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea.obs-input:focus { border-color: var(--accent2); }
+  textarea.obs-input::placeholder { color: #3a3a55; }
+
+  /* ── TABLA RESUMEN ── */
+  .summary-table {
+    max-width: 960px;
+    margin: 0 auto 60px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .summary-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .summary-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: #13131a;
+  }
+  .summary-table td {
+    padding: 12px 20px;
+    font-size: 13px;
+    border-bottom: 1px solid #1e1e2a;
+    vertical-align: middle;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table .td-num {
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    font-size: 11px;
+  }
+  .summary-table .td-pts {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    text-align: right;
+  }
+  .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    background: var(--border);
+  }
+  .dot-4 { background: var(--green); }
+  .dot-3 { background: var(--accent); }
+  .dot-2 { background: var(--orange); }
+  .dot-1 { background: var(--accent3); }
+  .dot-0 { background: var(--border); }
+
+  /* footer */
+  footer {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--border);
+    margin-top: 40px;
+    letter-spacing: 1px;
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 20px; }
+    .btn, .score-actions { display: none; }
+    .rubric-card { border: 1px solid #ccc; margin-bottom: 12px; }
+    .card-levels { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Administración Financiera · 1er Sem 2026</div>
+  <h1>Rúbrica <em>Solemne 2</em></h1>
+  <div class="subtitle">// evaluación_financiera · 8 ítems · 100 pts máx</div>
+</header>
+
+<!-- PANEL PUNTAJE -->
+<div class="score-panel">
+  <div class="score-display">
+    <div class="score-number" id="totalScore">0</div>
+    <div class="score-label">/ 100 pts</div>
+  </div>
+  <div class="score-bar-wrap">
+    <div class="score-bar-track"><div class="score-bar-fill" id="scoreBar"></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <span class="nota-label">Nota estimada&nbsp;</span>
+      <span class="nota-value" id="notaVal">1.0</span>
+    </div>
+    <div style="margin-top:8px; font-size:11px; color:var(--muted); font-family:'DM Mono',monospace;">
+      Escala 1.0 – 7.0 &nbsp;|&nbsp; Aprobación ≥ 60 pts (Nota 4.0)
+    </div>
+  </div>
+  <div class="score-actions">
+    <button class="btn btn-primary" onclick="window.print()">⎙ Imprimir</button>
+    <button class="btn btn-ghost" onclick="resetAll()">↺ Reiniciar</button>
+  </div>
+</div>
+
+<!-- ═══════════════ ÍTEM II ═══════════════ -->
+<div class="section-header">
+  <span class="section-tag">Ítem II</span>
+  <span class="section-title">Análisis de Equilibrio y Riesgo</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="rubric-grid" id="rubricGrid">
+
+  <!-- P1 -->
+  <div class="rubric-card" id="card-1">
+    <div class="card-top" onclick="toggleCard(1)">
+      <span class="card-num">P1</span>
+      <div class="card-info">
+        <div class="card-name">Punto de Equilibrio</div>
+        <div class="card-desc">Calcula correctamente las unidades de PE para Proyecto A y B usando la fórmula CF / Margen de Contribución.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-1">—</span>
+        <span class="card-pts-max">/ 15 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(1,15,4)">
+          <div class="level-score">15 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">PE correcto para ambos proyectos con fórmula, cálculo y análisis de viabilidad.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(1,11,3)">
+          <div class="level-score">11 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Ambos PE calculados correctamente, sin análisis o con error menor de interpretación.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(1,7,2)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Solo uno de los dos proyectos calculado correctamente o fórmula con error conceptual.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(1,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin desarrollo, fórmula incorrecta o resultado sin fundamento.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-1" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2 -->
+  <div class="rubric-card" id="card-2">
+    <div class="card-top" onclick="toggleCard(2)">
+      <span class="card-num">P2</span>
+      <div class="card-info">
+        <div class="card-name">Evaluación de Riesgo (demanda -20%)</div>
+        <div class="card-desc">Calcula utilidad operativa con demanda al 80% y determina cuál proyecto es más riesgoso.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-2">—</span>
+        <span class="card-pts-max">/ 15 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(2,15,4)">
+          <div class="level-score">15 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Cálculo correcto de ambas utilidades, identifica riesgo de A con argumento financiero sólido.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(2,11,3)">
+          <div class="level-score">11 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Cálculos correctos pero análisis de riesgo superficial o incompleto.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(2,7,2)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Un cálculo correcto o análisis de riesgo sin sustento numérico.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(2,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin desarrollo válido o conclusión sin base cuantitativa.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-2" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P3 -->
+  <div class="rubric-card" id="card-3">
+    <div class="card-top" onclick="toggleCard(3)">
+      <span class="card-num">P3</span>
+      <div class="card-info">
+        <div class="card-name">Flujo de Caja 12 meses</div>
+        <div class="card-desc">Proyección mensual completa para ambos proyectos con ingresos, costos variables, costos fijos y flujo neto.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-3">—</span>
+        <span class="card-pts-max">/ 15 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(3,15,4)">
+          <div class="level-score">15 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Flujo completo y correcto para ambos proyectos, incluye inversión inicial en mes 0 y estructura clara.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(3,11,3)">
+          <div class="level-score">11 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Flujo correcto con errores menores o falta un componente (ej: no incluye inversión inicial).</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(3,7,2)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Solo un proyecto completo o estructura con errores conceptuales importantes.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(3,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin proyección o datos sin coherencia con el caso.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-3" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P4 -->
+  <div class="rubric-card" id="card-4">
+    <div class="card-top" onclick="toggleCard(4)">
+      <span class="card-num">P4</span>
+      <div class="card-info">
+        <div class="card-name">Cálculo del VAN</div>
+        <div class="card-desc">Calcula el VAN de ambos proyectos a tasa del 10% mensual usando los flujos proyectados.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-4">—</span>
+        <span class="card-pts-max">/ 15 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(4,15,4)">
+          <div class="level-score">15 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">VAN correcto para ambos proyectos, fórmula explícita, usa tasa 10% mensual e interpreta el resultado.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(4,11,3)">
+          <div class="level-score">11 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">VAN calculado correctamente sin interpretación o con error menor de redondeo/fórmula.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(4,7,2)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Solo un VAN correcto o tasa aplicada incorrectamente.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(4,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin cálculo o procedimiento incoherente.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-4" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ ÍTEM III ═══════════════ -->
+<div class="section-header">
+  <span class="section-tag">Ítem III</span>
+  <span class="section-title">Toma de Decisión y Mejora Estratégica</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="rubric-grid">
+
+  <!-- P5 -->
+  <div class="rubric-card" id="card-5">
+    <div class="card-top" onclick="toggleCard(5)">
+      <span class="card-num">P5</span>
+      <div class="card-info">
+        <div class="card-name">Recomendación Final al Inversionista</div>
+        <div class="card-desc">Recomienda un proyecto con argumentos técnicos basados en VAN, PE y riesgo.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-5">—</span>
+        <span class="card-pts-max">/ 15 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(5,15,4)">
+          <div class="level-score">15 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Decisión clara con al menos 3 argumentos técnicos (VAN, riesgo, PE) coherentes entre sí.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(5,11,3)">
+          <div class="level-score">11 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Decisión justificada con 1–2 argumentos técnicos válidos.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(5,7,2)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Decisión sin argumento técnico o con justificación subjetiva solamente.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(5,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin respuesta o decisión contradictoria con los datos calculados.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-5" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P6 -->
+  <div class="rubric-card" id="card-6">
+    <div class="card-top" onclick="toggleCard(6)">
+      <span class="card-num">P6</span>
+      <div class="card-info">
+        <div class="card-name">Elección Personal como Estudiante de Diseño</div>
+        <div class="card-desc">Elige un proyecto considerando su perfil profesional, con argumentos que van más allá de solo lo financiero.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-6">—</span>
+        <span class="card-pts-max">/ 10 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(6,10,4)">
+          <div class="level-score">10 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Reflexión profunda que integra perspectiva profesional del diseño con criterios financieros.</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(6,7,3)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Elección justificada con argumentos personales válidos y algún criterio financiero.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(6,4,2)">
+          <div class="level-score">4 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Elección sin argumento financiero o justificación muy superficial.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(6,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin respuesta o argumento no relacionado con el caso.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-6" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P7 -->
+  <div class="rubric-card" id="card-7">
+    <div class="card-top" onclick="toggleCard(7)">
+      <span class="card-num">P7</span>
+      <div class="card-info">
+        <div class="card-name">Propuesta de Mejora Concreta</div>
+        <div class="card-desc">Propone una mejora viable y específica (reducción de costos, precios, capacidad, etc.) con impacto cuantificable.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-7">—</span>
+        <span class="card-pts-max">/ 10 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(7,10,4)">
+          <div class="level-score">10 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Propuesta concreta, viable y con estimación del impacto financiero (ej: "reducir CF en $200k aumenta utilidad en X").</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(7,7,3)">
+          <div class="level-score">7 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Mejora válida y razonable pero sin cuantificar el impacto.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(7,4,2)">
+          <div class="level-score">4 pts</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Mejora genérica o no relacionada directamente con la estructura de costos del proyecto.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(7,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin propuesta o propuesta irrelevante/inviable.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-7" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- P8 -->
+  <div class="rubric-card" id="card-8">
+    <div class="card-top" onclick="toggleCard(8)">
+      <span class="card-num">P8</span>
+      <div class="card-info">
+        <div class="card-name">Información Adicional Clave</div>
+        <div class="card-desc">Identifica un dato externo relevante y ausente en el caso que impactaría la decisión de inversión.</div>
+      </div>
+      <div class="card-right">
+        <span class="card-pts-label">PUNTAJE</span>
+        <span class="card-pts-value" id="pts-8">—</span>
+        <span class="card-pts-max">/ 5 pts</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-levels">
+      <div class="levels-grid">
+        <div class="level-btn level-4" onclick="setScore(8,5,4)">
+          <div class="level-score">5 pts</div>
+          <div class="level-name">Excelente</div>
+          <div class="level-desc">Dato relevante e impactante con explicación clara de por qué cambiaría la decisión (ej: tasa de mercado real, competencia, estacionalidad).</div>
+        </div>
+        <div class="level-btn level-3" onclick="setScore(8,3,3)">
+          <div class="level-score">3 pts</div>
+          <div class="level-name">Satisfactorio</div>
+          <div class="level-desc">Dato válido pero sin explicar su impacto en la decisión.</div>
+        </div>
+        <div class="level-btn level-2" onclick="setScore(8,1,2)">
+          <div class="level-score">1 pt</div>
+          <div class="level-name">Parcial</div>
+          <div class="level-desc">Dato poco relevante o ya presente en el caso.</div>
+        </div>
+        <div class="level-btn level-1" onclick="setScore(8,0,1)">
+          <div class="level-score">0 pts</div>
+          <div class="level-name">Insuficiente</div>
+          <div class="level-desc">Sin respuesta o dato no relacionado con la evaluación financiera.</div>
+        </div>
+      </div>
+      <div class="obs-wrap">
+        <div class="obs-label">Observaciones</div>
+        <textarea class="obs-input" id="obs-8" placeholder="Comentarios del evaluador..."></textarea>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ RESUMEN ═══════════════ -->
+<div class="section-header">
+  <span class="section-tag">Resumen</span>
+  <span class="section-title">Tabla de Puntajes</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="summary-table">
+  <table>
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Pregunta</th>
+        <th>Nivel</th>
+        <th style="text-align:right;">Pts obtenidos</th>
+        <th style="text-align:right;">Pts máx</th>
+      </tr>
+    </thead>
+    <tbody id="summaryBody">
+      <tr><td class="td-num">P1</td><td>Punto de Equilibrio</td><td><span class="dot dot-0" id="dot-1"></span><span id="lv-1">—</span></td><td class="td-pts" id="sum-1">—</td><td class="td-pts" style="color:var(--muted)">15</td></tr>
+      <tr><td class="td-num">P2</td><td>Evaluación de Riesgo</td><td><span class="dot dot-0" id="dot-2"></span><span id="lv-2">—</span></td><td class="td-pts" id="sum-2">—</td><td class="td-pts" style="color:var(--muted)">15</td></tr>
+      <tr><td class="td-num">P3</td><td>Flujo de Caja</td><td><span class="dot dot-0" id="dot-3"></span><span id="lv-3">—</span></td><td class="td-pts" id="sum-3">—</td><td class="td-pts" style="color:var(--muted)">15</td></tr>
+      <tr><td class="td-num">P4</td><td>Cálculo del VAN</td><td><span class="dot dot-0" id="dot-4"></span><span id="lv-4">—</span></td><td class="td-pts" id="sum-4">—</td><td class="td-pts" style="color:var(--muted)">15</td></tr>
+      <tr><td class="td-num">P5</td><td>Recomendación Final</td><td><span class="dot dot-0" id="dot-5"></span><span id="lv-5">—</span></td><td class="td-pts" id="sum-5">—</td><td class="td-pts" style="color:var(--muted)">15</td></tr>
+      <tr><td class="td-num">P6</td><td>Elección Personal</td><td><span class="dot dot-0" id="dot-6"></span><span id="lv-6">—</span></td><td class="td-pts" id="sum-6">—</td><td class="td-pts" style="color:var(--muted)">10</td></tr>
+      <tr><td class="td-num">P7</td><td>Propuesta de Mejora</td><td><span class="dot dot-0" id="dot-7"></span><span id="lv-7">—</span></td><td class="td-pts" id="sum-7">—</td><td class="td-pts" style="color:var(--muted)">10</td></tr>
+      <tr><td class="td-num">P8</td><td>Información Adicional</td><td><span class="dot dot-0" id="dot-8"></span><span id="lv-8">—</span></td><td class="td-pts" id="sum-8">—</td><td class="td-pts" style="color:var(--muted)">5</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>rubrica_solemne2.html · administración financiera 2026</footer>
+
+<script>
+  const maxPts = {1:15, 2:15, 3:15, 4:15, 5:15, 6:10, 7:10, 8:5};
+  const levelNames = {4:'Excelente', 3:'Satisfactorio', 2:'Parcial', 1:'Insuficiente'};
+  const dotClass = {4:'dot-4', 3:'dot-3', 2:'dot-2', 1:'dot-1'};
+  const scores = {};
+
+  function toggleCard(n) {
+    const card = document.getElementById('card-' + n);
+    card.classList.toggle('open');
+  }
+
+  function setScore(cardNum, pts, level) {
+    scores[cardNum] = pts;
+
+    // Update card pts display
+    const ptsEl = document.getElementById('pts-' + cardNum);
+    ptsEl.textContent = pts;
+    const colorMap = {4:'var(--green)', 3:'var(--accent)', 2:'var(--orange)', 1:'var(--accent3)'};
+    ptsEl.style.color = colorMap[level];
+
+    // Mark active button
+    const card = document.getElementById('card-' + cardNum);
+    card.classList.add('selected');
+    card.querySelectorAll('.level-btn').forEach(btn => {
+      btn.classList.remove('active-4','active-3','active-2','active-1');
+    });
+    event.currentTarget.classList.add('active-' + level);
+
+    // Update summary row
+    document.getElementById('sum-' + cardNum).textContent = pts + ' pts';
+    document.getElementById('sum-' + cardNum).style.color = colorMap[level];
+    const dot = document.getElementById('dot-' + cardNum);
+    dot.className = 'dot ' + dotClass[level];
+    document.getElementById('lv-' + cardNum).textContent = levelNames[level];
+
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const total = Object.values(scores).reduce((a,b) => a+b, 0);
+    document.getElementById('totalScore').textContent = total;
+    document.getElementById('scoreBar').style.width = total + '%';
+
+    // Nota 1.0–7.0 lineal: nota = 1 + (total/100)*6
+    const nota = (1 + (total / 100) * 6).toFixed(1);
+    const notaEl = document.getElementById('notaVal');
+    notaEl.textContent = nota;
+    notaEl.style.color = total >= 60 ? 'var(--green)' : total >= 40 ? 'var(--orange)' : 'var(--accent3)';
+
+    document.getElementById('totalScore').style.color = total >= 60 ? 'var(--green)' : total >= 40 ? 'var(--orange)' : 'var(--accent3)';
+  }
+
+  function resetAll() {
+    if (!confirm('¿Reiniciar toda la evaluación?')) return;
+    Object.keys(scores).forEach(k => delete scores[k]);
+    for (let i = 1; i <= 8; i++) {
+      document.getElementById('pts-' + i).textContent = '—';
+      document.getElementById('pts-' + i).style.color = 'var(--accent2)';
+      document.getElementById('sum-' + i).textContent = '—';
+      document.getElementById('sum-' + i).style.color = '';
+      document.getElementById('dot-' + i).className = 'dot dot-0';
+      document.getElementById('lv-' + i).textContent = '—';
+      document.getElementById('obs-' + i).value = '';
+      const card = document.getElementById('card-' + i);
+      card.classList.remove('selected','open');
+      card.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active-4','active-3','active-2','active-1'));
+    }
+    document.getElementById('totalScore').textContent = '0';
+    document.getElementById('totalScore').style.color = 'var(--accent)';
+    document.getElementById('scoreBar').style.width = '0%';
+    document.getElementById('notaVal').textContent = '1.0';
+    document.getElementById('notaVal').style.color = 'var(--green)';
+  }
+</script>
+</body>
+</html>
